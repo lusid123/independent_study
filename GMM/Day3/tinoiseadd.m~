@@ -1,0 +1,31 @@
+%anil
+%Program to add noise to speech signal from the noise file
+%recognition
+
+fclose('all');
+clear all;
+clc;
+spath='/home/anil/myprograms/Tidigitdatawithnormalization/Test/';
+tpath='/home/anil/myprograms/Noisydatabase/Factory15dbtest/';
+
+for(i=0:9)
+    str=sprintf('%d*',i);
+    spall=dir(fullfile(spath,str));
+    for(j=1:length(spall))
+        sp=spall(j).name;
+        utall=dir(fullfile(spath,sp,'*.wav'));
+        for(k=1:length(utall))
+            ut=utall(k).name;
+            fprintf(1,'Processing %s\n',ut);
+            addNoise(fullfile(spath,sp,ut),fullfile(tpath,sp,ut),'factory1.wav',15)
+            clear ut;
+        end;
+        clear utall;
+    end;
+    fclose('all');
+    clear spall;
+end;
+
+
+
+

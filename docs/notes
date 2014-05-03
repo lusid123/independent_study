@@ -1,0 +1,129 @@
+
+=======
+April 4
+=======
+
+Binary classification among languages
+Mel-frequency cepstral coefficients of the audio signals are the primary features.
+Downloaded data from VoxForge and extracted 1.5 sec audio samples and processed them.
+Can also use delta features(no significant upsurge in accuracy though).
+
+
+=======
+April 5
+=======
+
+Data Processing
+
+1. Get 16-bit 48KHz audio clips from various languages
+2. Extract middle 1.5 seconds from each clip
+3. Divide 1.5 second sample into 25ms frames each overlapping by 10ms
+4. Multiply each frame by hamming window for smoothening
+5. Extract MFCC features from each of these frames(Used first 13 cepstral coefficients as primary features)
+
+Feature values of each frame are inserted into the training matrix
+
+=======
+April 6
+=======
+
+--------------
+Neural Network
+--------------
+
+Different approach for collecting the training data
+
+-Model each clip as a multivariate Gaussian distribution
+-Compute mean and variance of each feature across each clip
+-Change dimension of feature vector to 78
+
+Maintain bias and weight for each neuron in input and hidden layers.
+Feedforward neural network model with standard backpropagation learning algorithm.
+
+
+I have an idea.
+-Extract 13 MFCC coefficients for each of the audio sample
+-Give output values y=1,2,3,4,5,6 for samples in each of the languages
+-The ANN will have 13 neurons in the input layer and just one output neuron that will output one of 1,2,3,4,5,6 values or if it doesn't, we'll round it off.
+
+
+So what are the steps?
+1. Extract MFCC feature for a given audio sample.
+2. Implement the forward propagation algorithm of the ANN(with logistic regression?).
+3. Implement backward propagation algorithm.
+4. Write code for testing a given input audio signal.
+
+
+======================================================
+Step 1 : Extract MFCC features of a given audio sample
+======================================================
+
+Option 1:
+Can we use that Auditory Toolbox?
+I'll try to load it in matlab and test it with a sample.
+OK. Looks easy enough.
+After setting the path to the toolbox, I figured out the following MATLAB commands.
+
+[y fs] = wavread('audio_sample.wav');
+%Read the input sample file. fs is the sampling rate and y is the actual data(I'm guessin the values of samples at the intervals specified by fs).
+c = mfcc(y, fs, 0.25);
+%Get the mel frequency cepstral coefficients. The 3rd argument to mfcc() is the frame rate. For a frame rate of 0.25(for 5sec sample), you get a 13X1 output vector which will go directly to the neural network input layer. 
+
+==> Can also take 0.5 framing rate and take an average of the 2 columns of 13 coeffs.
+
+==> For training sample length of 90 sec, 0.02 framing rate is used.
+
+
+Option 2:
+Search for some library online.
+
+
+======================================================================================
+Step 2 : Implement forward propagation algorithm for selected neural network structure
+======================================================================================
+
+
+Write equations on paper.
+Implement them in the algorithm.
+Make it modular.
+
+
+May 1
+------
+
+Problem seems to be with the sigmoid function.
+It's only dependable in 0-1 range it seems.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
